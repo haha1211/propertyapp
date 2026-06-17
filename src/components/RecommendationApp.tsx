@@ -13,8 +13,8 @@ const defaultValues: BuyerPreferencesInput = {
   maxMonthlyInterest: 1600000,
   minRooms: 3,
   nearStation: true,
-  minAreaM2: 55,
-  maxAreaM2: undefined,
+  minAreaPyeong: 18,
+  maxAreaPyeong: undefined,
   minPrice: undefined,
   maxPrice: 1000000000
 };
@@ -28,6 +28,10 @@ function formatWon(value: number) {
 
 function formatNumberInput(value: unknown) {
   return typeof value === "number" && Number.isFinite(value) ? value : "";
+}
+
+function formatPyeong(areaM2: number) {
+  return `${(areaM2 / 3.305785).toFixed(1)}평`;
 }
 
 export default function RecommendationApp() {
@@ -139,15 +143,15 @@ export default function RecommendationApp() {
 
           <div className="mt-4 grid grid-cols-2 gap-4">
             <label className="block text-sm font-semibold text-ink">
-              최소 면적(㎡)
-              <input className="mt-2 w-full rounded-md border border-line px-3 py-2" type="number" step="1" {...register("minAreaM2", { setValueAs: formatNumberInput })} />
+              최소 평수
+              <input className="mt-2 w-full rounded-md border border-line px-3 py-2" type="number" step="1" {...register("minAreaPyeong", { setValueAs: formatNumberInput })} />
             </label>
             <label className="block text-sm font-semibold text-ink">
-              최대 면적(㎡)
-              <input className="mt-2 w-full rounded-md border border-line px-3 py-2" type="number" step="1" {...register("maxAreaM2", { setValueAs: formatNumberInput })} />
+              최대 평수
+              <input className="mt-2 w-full rounded-md border border-line px-3 py-2" type="number" step="1" {...register("maxAreaPyeong", { setValueAs: formatNumberInput })} />
             </label>
           </div>
-          {errors.maxAreaM2 && <p className="mt-1 text-sm text-coral">{errors.maxAreaM2.message}</p>}
+          {errors.maxAreaPyeong && <p className="mt-1 text-sm text-coral">{errors.maxAreaPyeong.message}</p>}
 
           <div className="mt-4 grid grid-cols-2 gap-4">
             <label className="block text-sm font-semibold text-ink">
@@ -204,7 +208,7 @@ export default function RecommendationApp() {
                       </div>
                       <p className="mt-2 flex flex-wrap items-center gap-2 text-muted">
                         <MapPin aria-hidden="true" className="h-4 w-4" />
-                        {item.transaction.region} {item.transaction.neighborhood} · {item.transaction.areaM2}㎡ · 방 {item.transaction.rooms}개
+                        {item.transaction.region} {item.transaction.neighborhood} · {formatPyeong(item.transaction.areaM2)} ({item.transaction.areaM2}㎡) · 방 {item.transaction.rooms}개
                         {item.transaction.nearStation && <TrainFront aria-label="역세권" className="h-4 w-4 text-accent" />}
                       </p>
                     </div>

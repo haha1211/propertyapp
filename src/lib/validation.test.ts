@@ -9,12 +9,13 @@ describe("buyerPreferencesSchema", () => {
       maxMonthlyInterest: 1500000,
       minRooms: 3,
       nearStation: true,
-      minAreaM2: 55,
-      maxAreaM2: "",
+      minAreaPyeong: 18,
+      maxAreaPyeong: "",
       maxPrice: 1000000000
     });
 
     expect(result.region).toBe("서울");
+    expect(result.minAreaM2).toBeCloseTo(59.5, 1);
     expect(result.maxAreaM2).toBeUndefined();
   });
 

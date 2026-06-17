@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
+import { isProviderError } from "@/lib/provider-errors";
 import { getRecommendations } from "@/server/recommendation-service";
 
 export async function POST(request: Request) {
@@ -15,6 +16,24 @@ export async function POST(request: Request) {
           issues: error.flatten().fieldErrors
         },
         { status: 400 }
+      );
+    }
+
+    if (isProviderError(error)) {
+      console.error("Provider error", {
+        provider: error.provider,
+        code: error.code,
+        status: error.status,
+        message: error.message
+      });
+      const status = error.code === "UNSUPPORTED_REGION" || error.code === "CONFIGURATION" ? 400 : 502;
+      return NextResponse.json(
+        {
+          message: error.message,
+          provider: error.provider,
+          code: error.code
+        },
+        { status }
       );
     }
 

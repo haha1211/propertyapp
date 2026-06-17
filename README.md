@@ -29,5 +29,8 @@ USE_REAL_MORTGAGE_API=true
 실제 네트워크 integration test는 기본으로 skip됩니다. 키를 설정한 뒤 아래처럼 실행하면 실제 API 호출까지 검증합니다.
 
 ```bash
-RUN_INTEGRATION_TESTS=true npm test
+REAL_API_INTEGRATION_TESTS=true npm test
+# 또는 한쪽만 검증
+MOLIT_INTEGRATION_TESTS=true npm test
+FINLIFE_INTEGRATION_TESTS=true npm test
 ```

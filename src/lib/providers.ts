@@ -208,7 +208,7 @@ export function parseMolitApartmentTradePayload(payload: string, regionLabel = "
     const resultCode = String(header?.resultCode ?? header?.returnReasonCode ?? "00");
     const resultMessage = String(header?.resultMsg ?? header?.returnAuthMsg ?? "");
 
-    if (resultCode !== "00" && resultCode !== "0") {
+    if (!["0", "00", "000", "0000"].includes(resultCode)) {
       throw classifyOpenApiError("MOLIT", resultCode, resultMessage);
     }
 
